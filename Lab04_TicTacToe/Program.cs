@@ -3,7 +3,7 @@ using Lab04_TicTacToe.Classes;
 
 namespace Lab04_TicTacToe
 {
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
@@ -12,12 +12,22 @@ namespace Lab04_TicTacToe
 
         static void StartGame()
         {
-            // TODO: Setup your game. Create a new method that creates your players and instantiates the game class. Call that method in your Main method.
-            // You are requesting a Winner to be returned, Determine who the winner is output the celebratory message to the correct player. If it's a draw, tell them that there is no winner. 
-
             // 1. Create Players
             Player PlayerOne = new Player();
             Player PlayerTwo = new Player();
+            // 2. Start a new game
+            Game NewGame = new Game(PlayerOne, PlayerTwo);
+            Player Winner = NewGame.Play();
+
+            if (Winner.Name != "null")
+            {
+                Console.WriteLine($"{Winner.Name} is the winner!");
+            }
+            else
+            {
+                Console.WriteLine("A draw! Sorry, nobody wins.");
+            }
+
         }
 
 
