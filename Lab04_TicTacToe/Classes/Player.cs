@@ -13,16 +13,27 @@ namespace Lab04_TicTacToe.Classes
 		/// Flag to determine if it is the user's turn
 		public bool IsTurn { get; set; }
 
+		// idea given by Jona Brown to check if the correct number of turns has been taken.
+		public int TurnAmount { get; set; }
 
+		// Gets the input position from the user and returns it in the form of cordinates.
 		public Position GetPosition(Board board)
 		{
+			// Position starts out null, no user input yet.
 			Position desiredCoordinate = null;
+			// while null, as long as the user does not input -
 			while (desiredCoordinate is null)
 			{
+				// we ask the user for their desired location.
 				Console.WriteLine("Please select a location");
+				// Then take their input(a string) and parse it into an Int32
+				// that give us a position.
 				Int32.TryParse(Console.ReadLine(), out int position);
+				// we now plug position into the method PositionForNumber
+				// PositionForNumber is declared after this method.
 				desiredCoordinate = PositionForNumber(position);
 			}
+			//return the desiredCordinate. This will get used during the TakeTurn method, further down.
 			return desiredCoordinate;
 
 		}
@@ -30,6 +41,8 @@ namespace Lab04_TicTacToe.Classes
 
 		public static Position PositionForNumber(int position)
 		{
+			//The user was prompted to type in a number 1-9.
+			// Depending on the answer, their marker is dropped into the grid.
 			switch (position)
 			{
 				case 1: return new Position(0, 0); // Top Left
@@ -41,27 +54,31 @@ namespace Lab04_TicTacToe.Classes
 				case 7: return new Position(2, 0); // Bottom Left
 				case 8: return new Position(2, 1); // Bottom Middle 
 				case 9: return new Position(2, 2); // Bottom Right
-
-				default: return null;
+					// This represents a 3x3 square. TicTacToe board.
+				default: return null; //if they don't type in 1-9 we get null.
 			}
 		}
 
 
 		public void TakeTurn(Board board)
 		{
-			IsTurn = true;
+			IsTurn = true; // used by NextPlater method to make sure we're switching turns.
 
-			Console.WriteLine($"{Name} it is your turn");
+			Console.WriteLine($"{Name} it is your turn"); // tells player it is their turn.
 
-			Position position = GetPosition(board);
+			Position position = GetPosition(board); // calls the GetPosition method with the board as an argument
+			// promtps user for a cordinate. See line 20 for details.
 
-			if (Int32.TryParse(board.GameBoard[position.Row, position.Column], out int _))
+			if (Int32.TryParse(board.GameBoard[position.Row, position.Column], out int _)) //tests to see if user value is a number
 			{
-				board.GameBoard[position.Row, position.Column] = Marker;
+				TurnAmount++;
+				board.GameBoard[position.Row, position.Column] = Marker; // the value of the position from GetPosition
+				// is now either "X" or "O"
 			}
-			else
+			else // occurs when ther is already a marker on the coordinate.
 			{
 				Console.WriteLine("This space is already occupied");
+				Console.ReadLine();
 			}
 		}
 	}

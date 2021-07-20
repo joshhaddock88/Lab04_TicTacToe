@@ -6,6 +6,7 @@ namespace Lab04_TicTacToe.Classes
 {
 	public class Game
 	{
+		//instantiating new obects of the player and board class.
 		public Player PlayerOne { get; set; }
 		public Player PlayerTwo { get; set; }
 		public Player Winner { get; set; }
@@ -21,19 +22,28 @@ namespace Lab04_TicTacToe.Classes
 		/// Activate the Play of the game
 		public Player Play()
 		{
-			for (int i = 1; i <= 9; i++)
+			PlayerOne.Marker = "X";
+			PlayerTwo.Marker = "O";
+			PlayerOne.IsTurn = true;
+			PlayerTwo.IsTurn = false;
+			PlayerOne.Name = "PlayerOne";
+			PlayerTwo.Name = "PlayerTwo";
+
+			Board.DisplayBoard();
+			// while the counter is less than 9, call up the next player by checking which player has a positie IsTurn boolean.
+			// Was greatly aided by Jona Brown in creating this logic.
+			bool winner = false;
+			while(winner == false && PlayerOne.TurnAmount < 5 && PlayerTwo.TurnAmount < 5)
             {
-				NextPlayer().TakeTurn(Board);
-				Board.DisplayBoard();
-				if(CheckForWinner(Board))
-                {
-					return NextPlayer();
-                }
+				Player currentPlayer = NextPlayer();
+				currentPlayer.TakeTurn(Board);
+				winner = CheckForWinner(Board);
 				SwitchPlayer();
+				Console.Clear();
+				Board.DisplayBoard();
+				if (winner == true) return Winner;
             }
-			Player Draw = new Player();
-			Draw.Name = "draw";
-			return Draw;
+			return Winner;
 		}
 
 
@@ -65,12 +75,18 @@ namespace Lab04_TicTacToe.Classes
 				string b = Board.GameBoard[p2.Row, p2.Column];
 				string c = Board.GameBoard[p3.Row, p3.Column];
 
-				if (a==b && b==c)
+				if (a == "X" && b == "X" && c == "X")
+				{
+					Winner = PlayerOne;
+					return true;
+				}
+				else if (a == "O" && b == "O" && c == "O")
                 {
+					Winner = PlayerTwo;
 					return true;
                 }
 
-			}
+			}// if there is no winner, false
 
 			return false;
 		}

@@ -20,7 +20,7 @@ namespace Lab04_TicTacToe.Classes
 		public void DisplayBoard()
 		{
 
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 3; i++)//loops through our matric to write our board into the console.
             {
 				Console.WriteLine($"|{GameBoard[i, 0]}||{GameBoard[i, 1]}||{GameBoard[i, 2]}|");
             }
